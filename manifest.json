@@ -1,9 +1,56 @@
 {
-	"$schema": "https://raw.githubusercontent.com/atampy25/simple-mod-framework/main/Mod%20Manager/src/lib/manifest-schema.json",
-	"version": "0.1.0",
-	"id": "YourPreferredAlias.AnIDForTheMod",
-	"name": "Test Mod",
-	"description": "A truly amazing mod",
-	"authors": ["Your Preferred Alias"],
-	"frameworkVersion": "2.25.1"
+	"version": "1.0.0",
+	"id": "Burnthewitch.BulletDancer",
+	"name": "Bullet Dancer",
+	"description": "An attempt to remake Point Shooting from Hitman: Absolution from within the limitations of Hitman: World of Assassination.",
+	"authors": ["Burn, the witch"],
+	"frameworkVersion": "2.33.20",
+	"options": [
+		{
+			"name": "Action Kills Off",
+			"type": "select",
+			"contentFolders": ["patches"],
+			"group": "Mod Configuration"
+		},
+		{
+			"name": "Action Kills On",
+			"enabledByDefault": true,
+			"tooltip": "Enables Hitman Absolution style action kills (except for melee), modified to be compatible with Bullet Dancer, originally made by Atampy 26.",
+			"type": "select",
+			"group": "Mod Configuration",
+			"contentFolders": ["patches_action"]
+		}],
+	"requirements": ["Notex.SimpleKeyEventHelper"],
+	"dependencies": [
+		{
+			"runtimeID": "00140C5C14DFD86D",
+			"toChunk": 0,
+			"portFromChunk1": true
+		},
+		{
+			"runtimeID": "00380C89BFBF6AED",
+			"toChunk": 0,
+			"portFromChunk1": true
+		},
+		{
+			"runtimeID": "006F34665266B155",
+			"toChunk": 0,
+			"portFromChunk1": true
+		},
+		{
+			"runtimeID": "00F791A73307AB48",
+			"toChunk": 0,
+			"portFromChunk1": true
+		},
+		{
+			"runtimeID": "0019C2D16CA1341A",
+			"toChunk": 0,
+			"portFromChunk1": true
+		},
+		{
+			"runtimeID": "00848488E5D10EBC",
+			"toChunk": 0,
+			"portFromChunk1": true
+		}
+		]
 }

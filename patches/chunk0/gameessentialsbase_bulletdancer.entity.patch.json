@@ -1,0 +1,461 @@
+{
+	"tempHash": "0093B7139387B988",
+	"tbluHash": "004D99E9BEC3EA51",
+	"patch": [
+		{
+			"AddEntity": [
+				"cafeaf3534dde8c9",
+				{
+					"parent": "cafe70328c28ae78",
+					"name": "Trigger Key Event",
+					"factory": "[assembly:/Templates/UI/Controls/simplekeyeventhelper.template?/SimpleKeyEventHelper.entitytemplate].pc_entitytype",
+					"blueprint": "[assembly:/Templates/UI/Controls/simplekeyeventhelper.template?/SimpleKeyEventHelper.entitytemplate].pc_entityblueprint",
+					"properties": {
+						"m_sModifierKeyName": {
+							"type": "ZString",
+							"value": "None"
+						},
+						"m_sKeyName": {
+							"type": "ZString",
+							"value": "NUMBER_1"
+						},
+						"m_bEnabled": { "type": "bool", "value": true }
+					},
+					"events": { "Down": { "Poll": ["cafe4a939335f1fc"] } }
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafe4a939335f1fc",
+				{
+					"parent": "cafebc976eecd006",
+					"name": "Check if Player can bullet time",
+					"factory": "[assembly:/_pro/design/logic/valuebool.template?/valuebool_poll.entitytemplate].pc_entitytype",
+					"blueprint": "[assembly:/_pro/design/logic/valuebool.template?/valuebool_poll.entitytemplate].pc_entityblueprint",
+					"properties": {
+						"m_rValueEntity": {
+							"type": "SEntityTemplateReference",
+							"value": "cafeb0c7593a48e1"
+						}
+					},
+					"events": {
+						"PollTrue": {
+							"Toggle": ["cafebff749826eed"],
+							"SetFalse": ["cafeb0c7593a48e1"]
+						},
+						"PollFalse": { "Poll": ["cafe4a28f1e71696"] }
+					}
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafe70328c28ae78",
+				{
+					"parent": "6933599ccecbd1ed",
+					"name": "Bullet Time",
+					"factory": "[modules:/zentity.class].pc_entitytype",
+					"blueprint": "[modules:/zentity.class].pc_entityblueprint"
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafe0d97b8af2ef6",
+				{
+					"parent": "cafe70328c28ae78",
+					"name": "Set game time multiplier",
+					"factory": "[assembly:/_pro/design/logic/valuefloat.template?/valuefloat_set.entitytemplate].pc_entitytype",
+					"blueprint": "[assembly:/_pro/design/logic/valuefloat.template?/valuefloat_set.entitytemplate].pc_entityblueprint",
+					"properties": {
+						"m_rValueEntity": {
+							"type": "SEntityTemplateReference",
+							"value": "cafe45e04a125960"
+						}
+					}
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafe45e04a125960",
+				{
+					"parent": "cafe0d97b8af2ef6",
+					"name": "Game time multiplier entity property",
+					"factory": "[assembly:/_pro/design/logic/valuefloat.template?/valuefloat_entityproperty.entitytemplate].pc_entitytype",
+					"blueprint": "[assembly:/_pro/design/logic/valuefloat.template?/valuefloat_entityproperty.entitytemplate].pc_entityblueprint",
+					"properties": {
+						"m_rEntity": {
+							"type": "SEntityTemplateReference",
+							"value": "cafe7ad3be227d13"
+						},
+						"m_sPropertyName": {
+							"type": "ZString",
+							"value": "m_fLevelSetupMultiplier"
+						}
+					}
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafe7ad3be227d13",
+				{
+					"parent": "cafe0d97b8af2ef6",
+					"name": "DebugHM5GameTimeMultiplierEnt",
+					"factory": "[modules:/zdebughm5gametimemultiplierent.class].pc_entitytype",
+					"blueprint": "[modules:/zdebughm5gametimemultiplierent.class].pc_entityblueprint",
+					"properties": {
+						"m_eReason": {
+							"type": "ZDebugHM5GameTimeMultiplierEnt.eTMLDReason",
+							"value": "eTMLDR_ActionKillHeadShot"
+						},
+						"m_fLevelSetupMultiplier": {
+							"type": "float32",
+							"value": 1.0
+						}
+					}
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafebff749826eed",
+				{
+					"parent": "cafebc976eecd006",
+					"name": "Is Time Slowed Down?",
+					"factory": "[assembly:/_pro/design/logic/valuebool.template?/valuebool_basic.entitytemplate].pc_entitytype",
+					"blueprint": "[assembly:/_pro/design/logic/valuebool.template?/valuebool_basic.entitytemplate].pc_entityblueprint",
+					"properties": {
+						"m_bValue": { "type": "bool", "value": false }
+					},
+					"events": {
+						"OnTrue": {
+							"Send": ["cafe28425b072d96"],
+							"SetValue": [
+								{
+									"ref": "cafe0d97b8af2ef6",
+									"value": {
+										"type": "float32",
+										"value": 0.1
+									}
+								}
+							],
+							"Start": [
+								"cafeb656261e48ac",
+								"cafe06f335a07b51"
+							],
+							"InGameplay": ["cafe0117ae16f02d"]
+						},
+						"OnFalse": {
+							"None": ["cafe0117ae16f02d"],
+							"SetValue": [
+								{
+									"ref": "cafe0d97b8af2ef6",
+									"value": {
+										"type": "float32",
+										"value": 1
+									}
+								}
+							],
+							"Stop": [
+								"cafeb656261e48ac",
+								"cafe06f335a07b51"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafe28425b072d96",
+				{
+					"parent": "cafeb869593b8a95",
+					"name": "Bullet Time Start",
+					"factory": "[modules:/zaudioevententity.class].pc_entitytype",
+					"blueprint": "[modules:/zaudioevententity.class].pc_entityblueprint",
+					"properties": {
+						"m_pMainEvent": {
+							"type": "ZRuntimeResourceID",
+							"value": {
+								"resource": "00E973557397BF6A",
+								"flag": "5F"
+							}
+						},
+						"m_fTransitionTime": {
+							"type": "float32",
+							"value": 0.10000000149011612
+						},
+						"m_bIsEnabled": { "type": "bool", "value": true },
+						"m_pEmitter": {
+							"type": "SEntityTemplateReference",
+							"value": "be79f2534d4c0c12"
+						}
+					}
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafe4fb506b2577f",
+				{
+					"parent": "cafeb869593b8a95",
+					"name": "Bullet Time End",
+					"factory": "[modules:/zaudioevententity.class].pc_entitytype",
+					"blueprint": "[modules:/zaudioevententity.class].pc_entityblueprint",
+					"properties": {
+						"m_pMainEvent": {
+							"type": "ZRuntimeResourceID",
+							"value": {
+								"resource": "[assembly:/sound/wwise/exportedwwisedata/events/specialfx/sfx_pointshooting/play_sfx_pointshooting_tag_exiterseq.wwiseevent].pc_wwisebank",
+								"flag": "5F"
+							}
+						},
+						"m_bIsEnabled": { "type": "bool", "value": true },
+						"m_pEmitter": {
+							"type": "SEntityTemplateReference",
+							"value": "be79f2534d4c0c12"
+						}
+					}
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafeb656261e48ac",
+				{
+					"parent": "cafeff56fdd3a895",
+					"name": "Timer For Slowmo",
+					"factory": "[assembly:/_pro/design/logic.template?/timer.entitytemplate].pc_entitytype",
+					"blueprint": "[assembly:/_pro/design/logic.template?/timer.entitytemplate].pc_entityblueprint",
+					"properties": {
+						"m_bEnabled": { "type": "bool", "value": false },
+						"m_nRemaining": { "type": "int32", "value": 1500 },
+						"m_nInterval": { "type": "int32", "value": 1500 }
+					},
+					"events": {
+						"TimeOut": {
+							"SetFalse": ["cafebff749826eed"],
+							"Start": ["cafe2b77995c86f7"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafe06f335a07b51",
+				{
+					"parent": "cafeff56fdd3a895",
+					"name": "Timer For End Sound",
+					"factory": "[assembly:/_pro/design/logic.template?/timer.entitytemplate].pc_entitytype",
+					"blueprint": "[assembly:/_pro/design/logic.template?/timer.entitytemplate].pc_entityblueprint",
+					"properties": {
+						"m_bEnabled": { "type": "bool", "value": false },
+						"m_nRemaining": { "type": "int32", "value": 858 },
+						"m_nInterval": { "type": "int32", "value": 858 }
+					},
+					"events": {
+						"TimeOut": { "Send": ["cafe4fb506b2577f"] }
+					}
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafeff56fdd3a895",
+				{
+					"parent": "cafe70328c28ae78",
+					"name": "Timers",
+					"factory": "[modules:/zentity.class].pc_entitytype",
+					"blueprint": "[modules:/zentity.class].pc_entityblueprint"
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafebc976eecd006",
+				{
+					"parent": "cafe70328c28ae78",
+					"name": "Variables",
+					"factory": "[modules:/zentity.class].pc_entitytype",
+					"blueprint": "[modules:/zentity.class].pc_entityblueprint"
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafeb0c7593a48e1",
+				{
+					"parent": "cafebc976eecd006",
+					"name": "Bullet Time?",
+					"factory": "[assembly:/_pro/design/logic/valuebool.template?/valuebool_basic.entitytemplate].pc_entitytype",
+					"blueprint": "[assembly:/_pro/design/logic/valuebool.template?/valuebool_basic.entitytemplate].pc_entityblueprint",
+					"properties": {
+						"m_bValue": { "type": "bool", "value": true }
+					},
+					"events": { "OnFalse": {}, "OnTrue": {} }
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafeb869593b8a95",
+				{
+					"parent": "cafe70328c28ae78",
+					"name": "Sound Effects",
+					"factory": "[modules:/zentity.class].pc_entitytype",
+					"blueprint": "[modules:/zentity.class].pc_entityblueprint"
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafe8d9498175728",
+				{
+					"parent": "cafeb869593b8a95",
+					"name": "Bullet Time Not Ready",
+					"factory": "[modules:/zaudioevententity.class].pc_entitytype",
+					"blueprint": "[modules:/zaudioevententity.class].pc_entityblueprint",
+					"properties": {
+						"m_pMainEvent": {
+							"type": "ZRuntimeResourceID",
+							"value": {
+								"resource": "006F34665266B155",
+								"flag": "5F"
+							}
+						},
+						"m_bIsEnabled": { "type": "bool", "value": true },
+						"m_pEmitter": {
+							"type": "SEntityTemplateReference",
+							"value": "be79f2534d4c0c12"
+						}
+					}
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafe0117ae16f02d",
+				{
+					"parent": "cafeb869593b8a95",
+					"name": "lunaria_dream",
+					"factory": "[assembly:/sound/wwise/exportedwwisedata/states/levelspecific_states/lunaria/lunaria_dream.wwisestategroup].pc_entitytype",
+					"blueprint": "[assembly:/sound/wwise/exportedwwisedata/states/levelspecific_states/lunaria/lunaria_dream.wwisestategroup].pc_entityblueprint"
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafee3d4ecec6679",
+				{
+					"parent": "cafeb869593b8a95",
+					"name": "Bullet Time Ready",
+					"factory": "[modules:/zaudioevententity.class].pc_entitytype",
+					"blueprint": "[modules:/zaudioevententity.class].pc_entityblueprint",
+					"properties": {
+						"m_pMainEvent": {
+							"type": "ZRuntimeResourceID",
+							"value": {
+								"resource": "[assembly:/sound/wwise/exportedwwisedata/events/specialfx/sfx_pointshooting/play_sfx_pointshooting_execution_end.wwiseevent].pc_wwisebank",
+								"flag": "5F"
+							}
+						},
+						"m_bIsEnabled": { "type": "bool", "value": true },
+						"m_pEmitter": {
+							"type": "SEntityTemplateReference",
+							"value": "be79f2534d4c0c12"
+						}
+					}
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafe2b77995c86f7",
+				{
+					"parent": "cafeff56fdd3a895",
+					"name": "Timer For Cooldown",
+					"factory": "[assembly:/_pro/design/logic.template?/timer.entitytemplate].pc_entitytype",
+					"blueprint": "[assembly:/_pro/design/logic.template?/timer.entitytemplate].pc_entityblueprint",
+					"properties": {
+						"m_bEnabled": { "type": "bool", "value": false },
+						"m_nRemaining": {
+							"type": "int32",
+							"value": 10000
+						},
+						"m_nInterval": { "type": "int32", "value": 10000 }
+					},
+					"events": {
+						"TimeOut": {
+							"SetTrue": ["cafeb0c7593a48e1"],
+							"Send": ["cafee3d4ecec6679"],
+							"Stop": ["cafe2b77995c86f7"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafe4a28f1e71696",
+				{
+					"parent": "cafebc976eecd006",
+					"name": "Check if Player can cancel bullet time",
+					"factory": "[assembly:/_pro/design/logic/valuebool.template?/valuebool_poll.entitytemplate].pc_entitytype",
+					"blueprint": "[assembly:/_pro/design/logic/valuebool.template?/valuebool_poll.entitytemplate].pc_entityblueprint",
+					"properties": {
+						"m_rValueEntity": {
+							"type": "SEntityTemplateReference",
+							"value": "cafebff749826eed"
+						}
+					},
+					"events": {
+						"PollTrue": {
+							"Toggle": ["cafebff749826eed"],
+							"Reset": [
+								"cafe06f335a07b51",
+								"cafeb656261e48ac"
+							],
+							"Stop": [
+								"cafe06f335a07b51",
+								"cafeb656261e48ac"
+							],
+							"Send": ["cafe5a871a29868b"],
+							"Start": ["cafe2b77995c86f7"]
+						},
+						"PollFalse": { "Send": ["cafe8d9498175728"] }
+					}
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafe5a871a29868b",
+				{
+					"parent": "cafeb869593b8a95",
+					"name": "Bullet Time Canceled",
+					"factory": "[modules:/zaudioevententity.class].pc_entitytype",
+					"blueprint": "[modules:/zaudioevententity.class].pc_entityblueprint",
+					"properties": {
+						"m_pMainEvent": {
+							"type": "ZRuntimeResourceID",
+							"value": {
+								"resource": "006F34665266B155",
+								"flag": "5F"
+							}
+						},
+						"m_bIsEnabled": { "type": "bool", "value": true },
+						"m_pEmitter": {
+							"type": "SEntityTemplateReference",
+							"value": "be79f2534d4c0c12"
+						}
+					}
+				}
+			]
+		}
+	],
+	"patchVersion": 6
+}

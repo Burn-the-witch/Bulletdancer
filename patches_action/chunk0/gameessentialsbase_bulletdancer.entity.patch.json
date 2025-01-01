@@ -1,0 +1,1172 @@
+{
+	"tempHash": "0093B7139387B988",
+	"tbluHash": "004D99E9BEC3EA51",
+	"patch": [
+		{
+			"AddEntity": [
+				"cafeaf3534dde8c9",
+				{
+					"parent": "cafe70328c28ae78",
+					"name": "Trigger Key Event",
+					"factory": "[assembly:/Templates/UI/Controls/simplekeyeventhelper.template?/SimpleKeyEventHelper.entitytemplate].pc_entitytype",
+					"blueprint": "[assembly:/Templates/UI/Controls/simplekeyeventhelper.template?/SimpleKeyEventHelper.entitytemplate].pc_entityblueprint",
+					"properties": {
+						"m_sModifierKeyName": {
+							"type": "ZString",
+							"value": "None"
+						},
+						"m_sKeyName": {
+							"type": "ZString",
+							"value": "NUMBER_1"
+						},
+						"m_bEnabled": { "type": "bool", "value": true }
+					},
+					"events": { "Down": { "Poll": ["cafe4a939335f1fc"] } }
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafe4a939335f1fc",
+				{
+					"parent": "cafebc976eecd006",
+					"name": "Check if Player can bullet time",
+					"factory": "[assembly:/_pro/design/logic/valuebool.template?/valuebool_poll.entitytemplate].pc_entitytype",
+					"blueprint": "[assembly:/_pro/design/logic/valuebool.template?/valuebool_poll.entitytemplate].pc_entityblueprint",
+					"properties": {
+						"m_rValueEntity": {
+							"type": "SEntityTemplateReference",
+							"value": "cafeb0c7593a48e1"
+						}
+					},
+					"events": {
+						"PollTrue": {
+							"Toggle": ["cafebff749826eed"],
+							"SetFalse": ["cafeb0c7593a48e1"]
+						},
+						"PollFalse": { "Poll": ["cafe4a28f1e71696"] }
+					}
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafe70328c28ae78",
+				{
+					"parent": "6933599ccecbd1ed",
+					"name": "Bullet Time",
+					"factory": "[modules:/zentity.class].pc_entitytype",
+					"blueprint": "[modules:/zentity.class].pc_entityblueprint"
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafe0d97b8af2ef6",
+				{
+					"parent": "cafe70328c28ae78",
+					"name": "Set game time multiplier",
+					"factory": "[assembly:/_pro/design/logic/valuefloat.template?/valuefloat_set.entitytemplate].pc_entitytype",
+					"blueprint": "[assembly:/_pro/design/logic/valuefloat.template?/valuefloat_set.entitytemplate].pc_entityblueprint",
+					"properties": {
+						"m_rValueEntity": {
+							"type": "SEntityTemplateReference",
+							"value": "cafe45e04a125960"
+						}
+					}
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafe45e04a125960",
+				{
+					"parent": "cafe0d97b8af2ef6",
+					"name": "Game time multiplier entity property",
+					"factory": "[assembly:/_pro/design/logic/valuefloat.template?/valuefloat_entityproperty.entitytemplate].pc_entitytype",
+					"blueprint": "[assembly:/_pro/design/logic/valuefloat.template?/valuefloat_entityproperty.entitytemplate].pc_entityblueprint",
+					"properties": {
+						"m_rEntity": {
+							"type": "SEntityTemplateReference",
+							"value": "cafe7ad3be227d13"
+						},
+						"m_sPropertyName": {
+							"type": "ZString",
+							"value": "m_fLevelSetupMultiplier"
+						}
+					}
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafe7ad3be227d13",
+				{
+					"parent": "cafe0d97b8af2ef6",
+					"name": "DebugHM5GameTimeMultiplierEnt",
+					"factory": "[modules:/zdebughm5gametimemultiplierent.class].pc_entitytype",
+					"blueprint": "[modules:/zdebughm5gametimemultiplierent.class].pc_entityblueprint",
+					"properties": {
+						"m_eReason": {
+							"type": "ZDebugHM5GameTimeMultiplierEnt.eTMLDReason",
+							"value": "eTMLDR_ActionKillHeadShot"
+						},
+						"m_fLevelSetupMultiplier": {
+							"type": "float32",
+							"value": 1.0
+						}
+					}
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafebff749826eed",
+				{
+					"parent": "cafebc976eecd006",
+					"name": "Is Time Slowed Down?",
+					"factory": "[assembly:/_pro/design/logic/valuebool.template?/valuebool_basic.entitytemplate].pc_entitytype",
+					"blueprint": "[assembly:/_pro/design/logic/valuebool.template?/valuebool_basic.entitytemplate].pc_entityblueprint",
+					"properties": {
+						"m_bValue": { "type": "bool", "value": false }
+					},
+					"events": {
+						"OnTrue": {
+							"Send": ["cafe28425b072d96"],
+							"SetValue": [
+								{
+									"ref": "cafe0d97b8af2ef6",
+									"value": {
+										"type": "float32",
+										"value": 0.1
+									}
+								}
+							],
+							"Start": [
+								"cafeb656261e48ac",
+								"cafe06f335a07b51"
+							],
+							"InGameplay": ["cafe0117ae16f02d"]
+						},
+						"OnFalse": {
+							"None": ["cafe0117ae16f02d"],
+							"SetValue": [
+								{
+									"ref": "cafe0d97b8af2ef6",
+									"value": {
+										"type": "float32",
+										"value": 1
+									}
+								}
+							],
+							"Stop": [
+								"cafeb656261e48ac",
+								"cafe06f335a07b51"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafe28425b072d96",
+				{
+					"parent": "cafeb869593b8a95",
+					"name": "Bullet Time Start",
+					"factory": "[modules:/zaudioevententity.class].pc_entitytype",
+					"blueprint": "[modules:/zaudioevententity.class].pc_entityblueprint",
+					"properties": {
+						"m_pMainEvent": {
+							"type": "ZRuntimeResourceID",
+							"value": {
+								"resource": "00E973557397BF6A",
+								"flag": "5F"
+							}
+						},
+						"m_fTransitionTime": {
+							"type": "float32",
+							"value": 0.10000000149011612
+						},
+						"m_bIsEnabled": { "type": "bool", "value": true },
+						"m_pEmitter": {
+							"type": "SEntityTemplateReference",
+							"value": "be79f2534d4c0c12"
+						}
+					}
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafe4fb506b2577f",
+				{
+					"parent": "cafeb869593b8a95",
+					"name": "Bullet Time End",
+					"factory": "[modules:/zaudioevententity.class].pc_entitytype",
+					"blueprint": "[modules:/zaudioevententity.class].pc_entityblueprint",
+					"properties": {
+						"m_pMainEvent": {
+							"type": "ZRuntimeResourceID",
+							"value": {
+								"resource": "[assembly:/sound/wwise/exportedwwisedata/events/specialfx/sfx_pointshooting/play_sfx_pointshooting_tag_exiterseq.wwiseevent].pc_wwisebank",
+								"flag": "5F"
+							}
+						},
+						"m_bIsEnabled": { "type": "bool", "value": true },
+						"m_pEmitter": {
+							"type": "SEntityTemplateReference",
+							"value": "be79f2534d4c0c12"
+						}
+					}
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafeb656261e48ac",
+				{
+					"parent": "cafeff56fdd3a895",
+					"name": "Timer For Slowmo",
+					"factory": "[assembly:/_pro/design/logic.template?/timer.entitytemplate].pc_entitytype",
+					"blueprint": "[assembly:/_pro/design/logic.template?/timer.entitytemplate].pc_entityblueprint",
+					"properties": {
+						"m_bEnabled": { "type": "bool", "value": false },
+						"m_nRemaining": { "type": "int32", "value": 1125 },
+						"m_nInterval": { "type": "int32", "value": 1125 }
+					},
+					"events": {
+						"TimeOut": {
+							"SetFalse": ["cafebff749826eed"],
+							"Start": ["cafe2b77995c86f7"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafe06f335a07b51",
+				{
+					"parent": "cafeff56fdd3a895",
+					"name": "Timer For End Sound",
+					"factory": "[assembly:/_pro/design/logic.template?/timer.entitytemplate].pc_entitytype",
+					"blueprint": "[assembly:/_pro/design/logic.template?/timer.entitytemplate].pc_entityblueprint",
+					"properties": {
+						"m_bEnabled": { "type": "bool", "value": false },
+						"m_nRemaining": { "type": "int32", "value": 858 },
+						"m_nInterval": { "type": "int32", "value": 858 }
+					},
+					"events": {
+						"TimeOut": { "Send": ["cafe4fb506b2577f"] }
+					}
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafeff56fdd3a895",
+				{
+					"parent": "cafe70328c28ae78",
+					"name": "Timers",
+					"factory": "[modules:/zentity.class].pc_entitytype",
+					"blueprint": "[modules:/zentity.class].pc_entityblueprint"
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafebc976eecd006",
+				{
+					"parent": "cafe70328c28ae78",
+					"name": "Variables",
+					"factory": "[modules:/zentity.class].pc_entitytype",
+					"blueprint": "[modules:/zentity.class].pc_entityblueprint"
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafeb0c7593a48e1",
+				{
+					"parent": "cafebc976eecd006",
+					"name": "Bullet Time?",
+					"factory": "[assembly:/_pro/design/logic/valuebool.template?/valuebool_basic.entitytemplate].pc_entitytype",
+					"blueprint": "[assembly:/_pro/design/logic/valuebool.template?/valuebool_basic.entitytemplate].pc_entityblueprint",
+					"properties": {
+						"m_bValue": { "type": "bool", "value": true }
+					},
+					"events": { "OnFalse": {}, "OnTrue": {} }
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafeb869593b8a95",
+				{
+					"parent": "cafe70328c28ae78",
+					"name": "Sound Effects",
+					"factory": "[modules:/zentity.class].pc_entitytype",
+					"blueprint": "[modules:/zentity.class].pc_entityblueprint"
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafe8d9498175728",
+				{
+					"parent": "cafeb869593b8a95",
+					"name": "Bullet Time Not Ready",
+					"factory": "[modules:/zaudioevententity.class].pc_entitytype",
+					"blueprint": "[modules:/zaudioevententity.class].pc_entityblueprint",
+					"properties": {
+						"m_pMainEvent": {
+							"type": "ZRuntimeResourceID",
+							"value": {
+								"resource": "006F34665266B155",
+								"flag": "5F"
+							}
+						},
+						"m_bIsEnabled": { "type": "bool", "value": true },
+						"m_pEmitter": {
+							"type": "SEntityTemplateReference",
+							"value": "be79f2534d4c0c12"
+						}
+					}
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafe0117ae16f02d",
+				{
+					"parent": "cafeb869593b8a95",
+					"name": "lunaria_dream",
+					"factory": "[assembly:/sound/wwise/exportedwwisedata/states/levelspecific_states/lunaria/lunaria_dream.wwisestategroup].pc_entitytype",
+					"blueprint": "[assembly:/sound/wwise/exportedwwisedata/states/levelspecific_states/lunaria/lunaria_dream.wwisestategroup].pc_entityblueprint"
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafee3d4ecec6679",
+				{
+					"parent": "cafeb869593b8a95",
+					"name": "Bullet Time Ready",
+					"factory": "[modules:/zaudioevententity.class].pc_entitytype",
+					"blueprint": "[modules:/zaudioevententity.class].pc_entityblueprint",
+					"properties": {
+						"m_pMainEvent": {
+							"type": "ZRuntimeResourceID",
+							"value": {
+								"resource": "[assembly:/sound/wwise/exportedwwisedata/events/specialfx/sfx_pointshooting/play_sfx_pointshooting_execution_end.wwiseevent].pc_wwisebank",
+								"flag": "5F"
+							}
+						},
+						"m_bIsEnabled": { "type": "bool", "value": true },
+						"m_pEmitter": {
+							"type": "SEntityTemplateReference",
+							"value": "be79f2534d4c0c12"
+						}
+					}
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafe2b77995c86f7",
+				{
+					"parent": "cafeff56fdd3a895",
+					"name": "Timer For Cooldown",
+					"factory": "[assembly:/_pro/design/logic.template?/timer.entitytemplate].pc_entitytype",
+					"blueprint": "[assembly:/_pro/design/logic.template?/timer.entitytemplate].pc_entityblueprint",
+					"properties": {
+						"m_bEnabled": { "type": "bool", "value": false },
+						"m_nRemaining": {
+							"type": "int32",
+							"value": 10000
+						},
+						"m_nInterval": { "type": "int32", "value": 10000 }
+					},
+					"events": {
+						"TimeOut": {
+							"SetTrue": ["cafeb0c7593a48e1"],
+							"Send": ["cafee3d4ecec6679"],
+							"Stop": ["cafe2b77995c86f7"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafe4a28f1e71696",
+				{
+					"parent": "cafebc976eecd006",
+					"name": "Check if Player can cancel bullet time",
+					"factory": "[assembly:/_pro/design/logic/valuebool.template?/valuebool_poll.entitytemplate].pc_entitytype",
+					"blueprint": "[assembly:/_pro/design/logic/valuebool.template?/valuebool_poll.entitytemplate].pc_entityblueprint",
+					"properties": {
+						"m_rValueEntity": {
+							"type": "SEntityTemplateReference",
+							"value": "cafebff749826eed"
+						}
+					},
+					"events": {
+						"PollTrue": {
+							"Toggle": ["cafebff749826eed"],
+							"Reset": [
+								"cafe06f335a07b51",
+								"cafeb656261e48ac"
+							],
+							"Stop": [
+								"cafe06f335a07b51",
+								"cafeb656261e48ac"
+							],
+							"Send": ["cafe5a871a29868b"],
+							"Start": ["cafe2b77995c86f7"]
+						},
+						"PollFalse": { "Send": ["cafe8d9498175728"] }
+					}
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafe5a871a29868b",
+				{
+					"parent": "cafeb869593b8a95",
+					"name": "Bullet Time Canceled",
+					"factory": "[modules:/zaudioevententity.class].pc_entitytype",
+					"blueprint": "[modules:/zaudioevententity.class].pc_entityblueprint",
+					"properties": {
+						"m_pMainEvent": {
+							"type": "ZRuntimeResourceID",
+							"value": {
+								"resource": "006F34665266B155",
+								"flag": "5F"
+							}
+						},
+						"m_bIsEnabled": { "type": "bool", "value": true },
+						"m_pEmitter": {
+							"type": "SEntityTemplateReference",
+							"value": "be79f2534d4c0c12"
+						}
+					}
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafee87375bf77f2",
+				{
+					"parent": "cafe297d7b3f0f5f",
+					"name": "Level Setup GameTimeMultiplier Track",
+					"factory": "[modules:/zentitypropertytrack.class].pc_entitytype",
+					"blueprint": "[modules:/zentitypropertytrack.class].pc_entityblueprint",
+					"properties": {
+						"m_sPropertyName": {
+							"type": "ZString",
+							"value": "m_fLevelSetupMultiplier"
+						},
+						"m_entityGroup": {
+							"type": "SEntityTemplateReference",
+							"value": "cafe297d7b3f0f5f",
+							"postInit": true
+						},
+						"m_aItems": {
+							"type": "TArray<SEntityTemplateReference>",
+							"value": ["cafe14d75d73f082"],
+							"postInit": true
+						}
+					}
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafe9d31450f10a1",
+				{
+					"parent": "cafe02b18cd2f311",
+					"name": "ActionKill_Explosion",
+					"factory": "[modules:/zsequenceentity.class].pc_entitytype",
+					"blueprint": "[modules:/zsequenceentity.class].pc_entityblueprint",
+					"properties": {
+						"m_duration": {
+							"type": "ZGameTime",
+							"value": { "m_nTicks": 314572 }
+						},
+						"m_aTracksAndGroups": {
+							"type": "TArray<SEntityTemplateReference>",
+							"value": ["cafe8657c9ba6891"],
+							"postInit": true
+						}
+					}
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafe69d3895885c0",
+				{
+					"parent": "cafe02b18cd2f311",
+					"name": "DebugHM5GameTimeMultiplierEnt_Headshot",
+					"factory": "[modules:/zdebughm5gametimemultiplierent.class].pc_entitytype",
+					"blueprint": "[modules:/zdebughm5gametimemultiplierent.class].pc_entityblueprint",
+					"properties": {
+						"m_eReason": {
+							"type": "ZDebugHM5GameTimeMultiplierEnt.eTMLDReason",
+							"value": "eTMLDR_ActionKillHeadShot"
+						}
+					}
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafe60c4cefdfc0d",
+				{
+					"parent": "cafee9021f39755d",
+					"name": "EntityTrack_DebugHM5GameTimeMultiplierEnt_LastAIinCP",
+					"factory": "[modules:/zentitygroup.class].pc_entitytype",
+					"blueprint": "[modules:/zentitygroup.class].pc_entityblueprint",
+					"properties": {
+						"m_targetEntity": {
+							"type": "SEntityTemplateReference",
+							"value": "cafe2bcac8eb1389",
+							"postInit": true
+						},
+						"m_aTracksAndGroups": {
+							"type": "TArray<SEntityTemplateReference>",
+							"value": ["cafeb0519005d0e0"],
+							"postInit": true
+						}
+					}
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafe8657c9ba6891",
+				{
+					"parent": "cafe9d31450f10a1",
+					"name": "EntityTrack_DebugHM5GameTimeMultiplierEnt_Explosion",
+					"factory": "[modules:/zentitygroup.class].pc_entitytype",
+					"blueprint": "[modules:/zentitygroup.class].pc_entityblueprint",
+					"properties": {
+						"m_targetEntity": {
+							"type": "SEntityTemplateReference",
+							"value": "cafebca1f3816132",
+							"postInit": true
+						},
+						"m_aTracksAndGroups": {
+							"type": "TArray<SEntityTemplateReference>",
+							"value": ["cafe6e8444eec196"],
+							"postInit": true
+						}
+					}
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafe051245f907eb",
+				{
+					"parent": "cafea758a1bd2dba",
+					"name": "Curve",
+					"factory": "[modules:/zfloatcurvesource.class].pc_entitytype",
+					"blueprint": "[modules:/zfloatcurvesource.class].pc_entityblueprint",
+					"properties": {
+						"m_startTime": {
+							"type": "ZGameTime",
+							"value": { "m_nTicks": 0 }
+						},
+						"m_duration": {
+							"type": "ZGameTime",
+							"value": { "m_nTicks": 419430 }
+						},
+						"m_curve": {
+							"type": "ZCurve",
+							"value": {
+								"data": [
+									[
+										0.0, 0.20000000298023224, 0.0, 0.0,
+										0.0, 0.0, 0.0, 0.20000000298023224
+									],
+									[
+										0.9750009179115297,
+										0.20000000298023224, 0.0, 0.0, 0.0,
+										0.0, 0.800000011920929,
+										0.20000000298023224
+									],
+									[
+										1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+										1.0
+									]
+								]
+							}
+						}
+					}
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafe40d77e034078",
+				{
+					"parent": "cafea58c98fe5c6a",
+					"name": "EntityTrack_DebugHM5GameTimeMultiplierEnt_LastAIinCombat",
+					"factory": "[modules:/zentitygroup.class].pc_entitytype",
+					"blueprint": "[modules:/zentitygroup.class].pc_entityblueprint",
+					"properties": {
+						"m_targetEntity": {
+							"type": "SEntityTemplateReference",
+							"value": "cafeb34d0c8148c9",
+							"postInit": true
+						},
+						"m_aTracksAndGroups": {
+							"type": "TArray<SEntityTemplateReference>",
+							"value": ["cafea758a1bd2dba"],
+							"postInit": true
+						}
+					}
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafe297d7b3f0f5f",
+				{
+					"parent": "cafe39f6364670e1",
+					"name": "EntityTrack_DebugHM5GameTimeMultiplierEnt",
+					"factory": "[modules:/zentitygroup.class].pc_entitytype",
+					"blueprint": "[modules:/zentitygroup.class].pc_entityblueprint",
+					"properties": {
+						"m_targetEntity": {
+							"type": "SEntityTemplateReference",
+							"value": "cafe69d3895885c0"
+						},
+						"m_aTracksAndGroups": {
+							"type": "TArray<SEntityTemplateReference>",
+							"value": ["cafee87375bf77f2"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafe6e8444eec196",
+				{
+					"parent": "cafe8657c9ba6891",
+					"name": "Level Setup GameTimeMultiplier Track",
+					"factory": "[modules:/zentitypropertytrack.class].pc_entitytype",
+					"blueprint": "[modules:/zentitypropertytrack.class].pc_entityblueprint",
+					"properties": {
+						"m_sPropertyName": {
+							"type": "ZString",
+							"value": "m_fLevelSetupMultiplier"
+						},
+						"m_entityGroup": {
+							"type": "SEntityTemplateReference",
+							"value": "cafe8657c9ba6891"
+						},
+						"m_aItems": {
+							"type": "TArray<SEntityTemplateReference>",
+							"value": ["cafef465f2002531"],
+							"postInit": true
+						}
+					}
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafe2b8f9d369db1",
+				{
+					"parent": "cafe02b18cd2f311",
+					"name": "SignalGate_Void03",
+					"factory": "[modules:/zsignalgateentity_void.class].pc_entitytype",
+					"blueprint": "[modules:/zsignalgateentity_void.class].pc_entityblueprint"
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafe40e16f046b50",
+				{
+					"parent": "cafe02b18cd2f311",
+					"name": "HM5ActionKillsEvent",
+					"factory": "[modules:/zhm5actionkillsevent.class].pc_entitytype",
+					"blueprint": "[modules:/zhm5actionkillsevent.class].pc_entityblueprint",
+					"events": {
+						"Headshot": { "Poll": ["cafe65e6fca5783e"] },
+						"Explosion": { "Poll": ["cafedd442422b29e"] },
+						"Last_AI_In_Combat_Kill": {
+							"Poll": ["cafe9e061156b507"]
+						},
+						"Last_AI_In_Checkpoint_Kill": {
+							"Poll": ["cafe30ddfba1cc3e"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafecbad3fb0b0a1",
+				{
+					"parent": "cafe02b18cd2f311",
+					"name": "SignalGate_Void01",
+					"factory": "[modules:/zsignalgateentity_void.class].pc_entitytype",
+					"blueprint": "[modules:/zsignalgateentity_void.class].pc_entityblueprint"
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafe2bcac8eb1389",
+				{
+					"parent": "cafe02b18cd2f311",
+					"name": "DebugHM5GameTimeMultiplierEnt_LastAIinCP",
+					"factory": "[modules:/zdebughm5gametimemultiplierent.class].pc_entitytype",
+					"blueprint": "[modules:/zdebughm5gametimemultiplierent.class].pc_entityblueprint",
+					"properties": {
+						"m_eReason": {
+							"type": "ZDebugHM5GameTimeMultiplierEnt.eTMLDReason",
+							"value": "eTMLDR_ActionKillLastEnemyInCheckPoint"
+						}
+					}
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafeb0519005d0e0",
+				{
+					"parent": "cafe60c4cefdfc0d",
+					"name": "Level Setup GameTimeMultiplier Track",
+					"factory": "[modules:/zentitypropertytrack.class].pc_entitytype",
+					"blueprint": "[modules:/zentitypropertytrack.class].pc_entityblueprint",
+					"properties": {
+						"m_sPropertyName": {
+							"type": "ZString",
+							"value": "m_fLevelSetupMultiplier"
+						},
+						"m_entityGroup": {
+							"type": "SEntityTemplateReference",
+							"value": "cafe60c4cefdfc0d"
+						},
+						"m_aItems": {
+							"type": "TArray<SEntityTemplateReference>",
+							"value": ["cafebeb1350353f0"],
+							"postInit": true
+						}
+					}
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafef465f2002531",
+				{
+					"parent": "cafe6e8444eec196",
+					"name": "Curve",
+					"factory": "[modules:/zfloatcurvesource.class].pc_entitytype",
+					"blueprint": "[modules:/zfloatcurvesource.class].pc_entityblueprint",
+					"properties": {
+						"m_startTime": {
+							"type": "ZGameTime",
+							"value": { "m_nTicks": 0 }
+						},
+						"m_duration": {
+							"type": "ZGameTime",
+							"value": { "m_nTicks": 314572 }
+						},
+						"m_curve": {
+							"type": "ZCurve",
+							"value": {
+								"data": [
+									[
+										0.0, 0.20000000298023224, 0.0, 0.0,
+										0.0, 0.0, 0.0, 0.20000000298023224
+									],
+									[
+										0.9666691422462464,
+										0.20000000298023224, 0.0, 0.0, 0.0,
+										0.0, 0.800000011920929,
+										0.20000000298023224
+									],
+									[
+										1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+										1.0
+									]
+								]
+							}
+						}
+					}
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafe16ea6498bdd8",
+				{
+					"parent": "cafe02b18cd2f311",
+					"name": "GameTensionEmitter01",
+					"factory": "[assembly:/templates/gameplay/ai2/gametensionemitter.template?/gametensionemitter.entitytemplate].pc_entitytype",
+					"blueprint": "[assembly:/templates/gameplay/ai2/gametensionemitter.template?/gametensionemitter.entitytemplate].pc_entityblueprint",
+					"events": {
+						"GameTensionState_Ambient": {
+							"Enable": ["cafe730a350a452a"]
+						},
+						"GameTensionState_Yellow": {
+							"Disable": ["cafe730a350a452a"]
+						},
+						"GameTensionState_Orange": {
+							"Disable": ["cafe730a350a452a"]
+						},
+						"GameTensionState_Red": {
+							"Disable": ["cafe730a350a452a"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafe730a350a452a",
+				{
+					"parent": "cafe02b18cd2f311",
+					"name": "SignalGate_Void",
+					"factory": "[modules:/zsignalgateentity_void.class].pc_entitytype",
+					"blueprint": "[modules:/zsignalgateentity_void.class].pc_entityblueprint",
+					"events": {
+						"Out": {
+							"In": ["cafecbad3fb0b0a1", "cafe2b8f9d369db1"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafe02b18cd2f311",
+				{
+					"parent": "6933599ccecbd1ed",
+					"name": "ActionKills",
+					"factory": "[modules:/zentity.class].pc_entitytype",
+					"blueprint": "[modules:/zentity.class].pc_entityblueprint"
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafeb34d0c8148c9",
+				{
+					"parent": "cafe02b18cd2f311",
+					"name": "DebugHM5GameTimeMultiplierEnt_LastAIinCombat",
+					"factory": "[modules:/zdebughm5gametimemultiplierent.class].pc_entitytype",
+					"blueprint": "[modules:/zdebughm5gametimemultiplierent.class].pc_entityblueprint",
+					"properties": {
+						"m_eReason": {
+							"type": "ZDebugHM5GameTimeMultiplierEnt.eTMLDReason",
+							"value": "eTMLDR_ActionKillLastEnemyInEncounter"
+						}
+					}
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafe14d75d73f082",
+				{
+					"parent": "cafee87375bf77f2",
+					"name": "CurveItem",
+					"factory": "[modules:/zfloatcurvesource.class].pc_entitytype",
+					"blueprint": "[modules:/zfloatcurvesource.class].pc_entityblueprint",
+					"properties": {
+						"m_startTime": {
+							"type": "ZGameTime",
+							"value": { "m_nTicks": 0 }
+						},
+						"m_duration": {
+							"type": "ZGameTime",
+							"value": { "m_nTicks": 209715 }
+						},
+						"m_curve": {
+							"type": "ZCurve",
+							"value": {
+								"data": [
+									[
+										0.0, 0.20000000298023224, 0.0, 0.0,
+										0.0, 0.0, 0.0, 0.20000000298023224
+									],
+									[
+										0.9500008821487428,
+										0.20000000298023224, 0.0, 0.0, 0.0,
+										0.0, 0.800000011920929,
+										0.20000000298023224
+									],
+									[
+										1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+										1.0
+									]
+								]
+							}
+						}
+					}
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafe39f6364670e1",
+				{
+					"parent": "cafe02b18cd2f311",
+					"name": "ActionKill_Headshot",
+					"factory": "[modules:/zsequenceentity.class].pc_entitytype",
+					"blueprint": "[modules:/zsequenceentity.class].pc_entityblueprint",
+					"properties": {
+						"m_duration": {
+							"type": "ZGameTime",
+							"value": { "m_nTicks": 209715 }
+						},
+						"m_aTracksAndGroups": {
+							"type": "TArray<SEntityTemplateReference>",
+							"value": ["cafe297d7b3f0f5f"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafea758a1bd2dba",
+				{
+					"parent": "cafe40d77e034078",
+					"name": "Level Setup GameTimeMultiplier Track",
+					"factory": "[modules:/zentitypropertytrack.class].pc_entitytype",
+					"blueprint": "[modules:/zentitypropertytrack.class].pc_entityblueprint",
+					"properties": {
+						"m_sPropertyName": {
+							"type": "ZString",
+							"value": "m_fLevelSetupMultiplier"
+						},
+						"m_entityGroup": {
+							"type": "SEntityTemplateReference",
+							"value": "cafe40d77e034078"
+						},
+						"m_aItems": {
+							"type": "TArray<SEntityTemplateReference>",
+							"value": ["cafe051245f907eb"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafee9021f39755d",
+				{
+					"parent": "cafe02b18cd2f311",
+					"name": "ActionKill_LastAIInCP",
+					"factory": "[modules:/zsequenceentity.class].pc_entitytype",
+					"blueprint": "[modules:/zsequenceentity.class].pc_entityblueprint",
+					"properties": {
+						"m_duration": {
+							"type": "ZGameTime",
+							"value": { "m_nTicks": 419430 }
+						},
+						"m_aTracksAndGroups": {
+							"type": "TArray<SEntityTemplateReference>",
+							"value": ["cafe60c4cefdfc0d"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafed8dfd5938c25",
+				{
+					"parent": "cafe02b18cd2f311",
+					"name": "DebugHM5GameTimeMultiplierEnt_PropFromBack",
+					"factory": "[modules:/zdebughm5gametimemultiplierent.class].pc_entitytype",
+					"blueprint": "[modules:/zdebughm5gametimemultiplierent.class].pc_entityblueprint",
+					"properties": {
+						"m_eReason": {
+							"type": "ZDebugHM5GameTimeMultiplierEnt.eTMLDReason",
+							"value": "eTMLDR_ActionKillCCProp"
+						}
+					}
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafebca1f3816132",
+				{
+					"parent": "cafe02b18cd2f311",
+					"name": "DebugHM5GameTimeMultiplierEnt_Explosion",
+					"factory": "[modules:/zdebughm5gametimemultiplierent.class].pc_entitytype",
+					"blueprint": "[modules:/zdebughm5gametimemultiplierent.class].pc_entityblueprint",
+					"properties": {
+						"m_eReason": {
+							"type": "ZDebugHM5GameTimeMultiplierEnt.eTMLDReason",
+							"value": "eTMLDR_ActionKillExplosion"
+						}
+					}
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafebeb1350353f0",
+				{
+					"parent": "cafeb0519005d0e0",
+					"name": "Curve",
+					"factory": "[modules:/zfloatcurvesource.class].pc_entitytype",
+					"blueprint": "[modules:/zfloatcurvesource.class].pc_entityblueprint",
+					"properties": {
+						"m_startTime": {
+							"type": "ZGameTime",
+							"value": { "m_nTicks": 0 }
+						},
+						"m_duration": {
+							"type": "ZGameTime",
+							"value": { "m_nTicks": 419430 }
+						},
+						"m_curve": {
+							"type": "ZCurve",
+							"value": {
+								"data": [
+									[
+										0.0, 0.20000000298023224, 0.0, 0.0,
+										0.0, 0.0, 0.0, 0.20000000298023224
+									],
+									[
+										0.9750009179115297,
+										0.20000000298023224, 0.0, 0.0, 0.0,
+										0.0, 0.800000011920929,
+										0.20000000298023224
+									],
+									[
+										1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+										1.0
+									]
+								]
+							}
+						}
+					}
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafea58c98fe5c6a",
+				{
+					"parent": "cafe02b18cd2f311",
+					"name": "ActionKill_LastAIInCombat",
+					"factory": "[modules:/zsequenceentity.class].pc_entitytype",
+					"blueprint": "[modules:/zsequenceentity.class].pc_entityblueprint",
+					"properties": {
+						"m_duration": {
+							"type": "ZGameTime",
+							"value": { "m_nTicks": 419430 }
+						},
+						"m_aTracksAndGroups": {
+							"type": "TArray<SEntityTemplateReference>",
+							"value": ["cafe40d77e034078"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafe65e6fca5783e",
+				{
+					"parent": "cafe39f6364670e1",
+					"name": "Check if Time is slowed",
+					"factory": "[assembly:/_pro/design/logic/valuebool.template?/valuebool_poll.entitytemplate].pc_entitytype",
+					"blueprint": "[assembly:/_pro/design/logic/valuebool.template?/valuebool_poll.entitytemplate].pc_entityblueprint",
+					"properties": {
+						"m_rValueEntity": {
+							"type": "SEntityTemplateReference",
+							"value": "cafebff749826eed"
+						}
+					},
+					"events": {
+						"PollTrue": {},
+						"PollFalse": { "Start": ["cafe39f6364670e1"] }
+					}
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafedd442422b29e",
+				{
+					"parent": "cafe9d31450f10a1",
+					"name": "Check if Time is slowed",
+					"factory": "[assembly:/_pro/design/logic/valuebool.template?/valuebool_poll.entitytemplate].pc_entitytype",
+					"blueprint": "[assembly:/_pro/design/logic/valuebool.template?/valuebool_poll.entitytemplate].pc_entityblueprint",
+					"properties": {
+						"m_rValueEntity": {
+							"type": "SEntityTemplateReference",
+							"value": "cafebff749826eed"
+						}
+					},
+					"events": {
+						"PollTrue": {},
+						"PollFalse": { "Start": ["cafe9d31450f10a1"] }
+					}
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafe9e061156b507",
+				{
+					"parent": "cafea58c98fe5c6a",
+					"name": "Check if Time is slowed",
+					"factory": "[assembly:/_pro/design/logic/valuebool.template?/valuebool_poll.entitytemplate].pc_entitytype",
+					"blueprint": "[assembly:/_pro/design/logic/valuebool.template?/valuebool_poll.entitytemplate].pc_entityblueprint",
+					"properties": {
+						"m_rValueEntity": {
+							"type": "SEntityTemplateReference",
+							"value": "cafebff749826eed"
+						}
+					},
+					"events": {
+						"PollTrue": {},
+						"PollFalse": { "Start": ["cafea58c98fe5c6a"] }
+					}
+				}
+			]
+		},
+		{
+			"AddEntity": [
+				"cafe30ddfba1cc3e",
+				{
+					"parent": "cafee9021f39755d",
+					"name": "Check if Time is slowed",
+					"factory": "[assembly:/_pro/design/logic/valuebool.template?/valuebool_poll.entitytemplate].pc_entitytype",
+					"blueprint": "[assembly:/_pro/design/logic/valuebool.template?/valuebool_poll.entitytemplate].pc_entityblueprint",
+					"properties": {
+						"m_rValueEntity": {
+							"type": "SEntityTemplateReference",
+							"value": "cafebff749826eed"
+						}
+					},
+					"events": {
+						"PollTrue": {},
+						"PollFalse": { "Start": ["cafee9021f39755d"] }
+					}
+				}
+			]
+		}
+	],
+	"patchVersion": 6
+}
