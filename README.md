@@ -6,4 +6,4 @@ An attempt to remake Point Shooting from Hitman: Absolution from within the limi
 
 ---
 
-`Burnthewitch.BulletDancer` v0.2.0, by Burn, the witch. This README was automatically generated from the mod's manifest.
+`Burnthewitch.BulletDancer` v1.0.0, by Burn, the witch. This README was automatically generated from the mod's manifest.
