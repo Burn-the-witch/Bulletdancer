@@ -1,10 +1,10 @@
 {
-	"version": "1.0.0",
+	"version": "0.2.0",
 	"id": "Burnthewitch.BulletDancer",
 	"name": "Bullet Dancer",
 	"description": "An attempt to remake Point Shooting from Hitman: Absolution from within the limitations of Hitman: World of Assassination.",
 	"authors": ["Burn, the witch"],
-	"frameworkVersion": "2.33.20",
+	"frameworkVersion": "2.33.23",
 	"options": [
 		{
 			"name": "Action Kills Off",
@@ -19,7 +19,8 @@
 			"type": "select",
 			"group": "Mod Configuration",
 			"contentFolders": ["patches_action"]
-		}],
+		}
+	],
 	"requirements": ["Notex.SimpleKeyEventHelper"],
 	"dependencies": [
 		{
@@ -52,5 +53,6 @@
 			"toChunk": 0,
 			"portFromChunk1": true
 		}
-		]
+	],
+	"updateCheck": "https://github.com/Burn-the-witch/Bulletdancer/releases/latest/download/updates.json"
 }

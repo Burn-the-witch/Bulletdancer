@@ -142,10 +142,7 @@
 									}
 								}
 							],
-							"Start": [
-								"cafeb656261e48ac",
-								"cafe06f335a07b51"
-							],
+							"Start": ["cafeb656261e48ac", "cafe06f335a07b51"],
 							"InGameplay": ["cafe0117ae16f02d"]
 						},
 						"OnFalse": {
@@ -159,10 +156,7 @@
 									}
 								}
 							],
-							"Stop": [
-								"cafeb656261e48ac",
-								"cafe06f335a07b51"
-							]
+							"Stop": ["cafeb656261e48ac", "cafe06f335a07b51"]
 						}
 					}
 				}
@@ -415,14 +409,8 @@
 					"events": {
 						"PollTrue": {
 							"Toggle": ["cafebff749826eed"],
-							"Reset": [
-								"cafe06f335a07b51",
-								"cafeb656261e48ac"
-							],
-							"Stop": [
-								"cafe06f335a07b51",
-								"cafeb656261e48ac"
-							],
+							"Reset": ["cafe06f335a07b51", "cafeb656261e48ac"],
+							"Stop": ["cafe06f335a07b51", "cafeb656261e48ac"],
 							"Send": ["cafe5a871a29868b"],
 							"Start": ["cafe2b77995c86f7"]
 						},
